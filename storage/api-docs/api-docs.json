@@ -1,0 +1,194 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Acortador de URLs",
+        "description": "Esta es la documentación de la API de acortamiento de URLs",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/urls": {
+            "get": {
+                "summary": "Obtiene todas las URLs acortadas",
+                "operationId": "35d128fcf8786494ee56e5c3a4bcc1bd",
+                "responses": {
+                    "200": {
+                        "description": "Lista de URLs acortadas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Url"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crea una nueva URL acortada",
+                "operationId": "b33f3b4b6f10aa29c7993364ebc2f485",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "originalUrl"
+                                ],
+                                "properties": {
+                                    "originalUrl": {
+                                        "type": "string",
+                                        "example": "https://www.ejemplo.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "URL acortada creada con éxito"
+                    },
+                    "400": {
+                        "description": "Error de validación"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        },
+        "/api/urls/{code}": {
+            "get": {
+                "summary": "Obtiene una URL acortada por su código",
+                "operationId": "f185c1d6733e25f67e3f209aed058265",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Código de la URL acortada",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "La URL acortada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Url"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "URL no encontrada"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        },
+        "/r/{code}": {
+            "get": {
+                "summary": "Redirige a la URL original usando el código acortado",
+                "operationId": "3a5de5db426a6a8ed4d7b37c6113ff31",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Código de la URL acortada",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "301": {
+                        "description": "Redirección permanente a la URL original"
+                    },
+                    "302": {
+                        "description": "Redirección temporal a la URL original"
+                    },
+                    "404": {
+                        "description": "URL no encontrada"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        },
+        "/api/urls/{id}": {
+            "delete": {
+                "summary": "Elimina una URL acortada",
+                "operationId": "fb3eb033dfb1ee1cd7595d4cd0c11549",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la URL acortada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "URL eliminada con éxito"
+                    },
+                    "404": {
+                        "description": "URL no encontrada"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Url": {
+                "title": "Modelo de URL",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "8fXye7tD"
+                    },
+                    "original_url": {
+                        "type": "string",
+                        "example": "https://www.ejemplo.com"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-09-15T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-09-15T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
